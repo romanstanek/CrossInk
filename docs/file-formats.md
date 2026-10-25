@@ -548,6 +548,13 @@ Binary layout:
 
 ## `section.bin`
 
+### Version 84
+
+Czech hyphenation patterns and normalization of decomposed Czech accents can change
+line breaks and pagination. The payload is unchanged from version 83. Complete files
+use byte `84`; suspended incremental files use `0xC5`. Older complete and partial
+caches rebuild automatically.
+
 ### Version 83
 
 Nested paragraphs and other blocks retain inherited CSS bold and italic styles,

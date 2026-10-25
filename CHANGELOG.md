@@ -1,3 +1,9 @@
+## [Unreleased]
+
+### Added
+
+- Czech EPUB hyphenation, including regional and ISO 639-2 language tags, legacy `cz` metadata, and decomposed Czech accents.
+
 ## [v1.6.1] - 2026-10-03
 
 ### Added

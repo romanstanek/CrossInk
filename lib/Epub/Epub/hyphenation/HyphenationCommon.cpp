@@ -208,7 +208,7 @@ std::vector<CodepointInfo> collectCodepoints(const std::string& word) {
     // precomposed Unicode scalar (Latin-1 / Latin-Extended), do that
     // composition here. This provides lightweight NFC-like behavior for
     // common Western European diacritics (acute, grave, circumflex, tilde,
-    // diaeresis, cedilla) without pulling in a full Unicode normalization
+    // diaeresis, cedilla, caron, ring) without pulling in a full Unicode normalization
     // library.
     if (!cps.empty()) {
       uint32_t prev = cps.back().value;
@@ -420,6 +420,72 @@ std::vector<CodepointInfo> collectCodepoints(const std::string& word) {
             case 0x007A:
               composed = 0x017C;
               break;  // z -> ż
+            default:
+              break;
+          }
+          break;
+        case 0x030A:  // ring above
+          switch (prev) {
+            case 'U':
+              composed = 0x016E;
+              break;  // U -> Ů
+            case 'u':
+              composed = 0x016F;
+              break;  // u -> ů
+            default:
+              break;
+          }
+          break;
+        case 0x030C:  // caron
+          switch (prev) {
+            case 'C':
+              composed = 0x010C;
+              break;  // C -> Č
+            case 'c':
+              composed = 0x010D;
+              break;  // c -> č
+            case 'D':
+              composed = 0x010E;
+              break;  // D -> Ď
+            case 'd':
+              composed = 0x010F;
+              break;  // d -> ď
+            case 'E':
+              composed = 0x011A;
+              break;  // E -> Ě
+            case 'e':
+              composed = 0x011B;
+              break;  // e -> ě
+            case 'N':
+              composed = 0x0147;
+              break;  // N -> Ň
+            case 'n':
+              composed = 0x0148;
+              break;  // n -> ň
+            case 'R':
+              composed = 0x0158;
+              break;  // R -> Ř
+            case 'r':
+              composed = 0x0159;
+              break;  // r -> ř
+            case 'S':
+              composed = 0x0160;
+              break;  // S -> Š
+            case 's':
+              composed = 0x0161;
+              break;  // s -> š
+            case 'T':
+              composed = 0x0164;
+              break;  // T -> Ť
+            case 't':
+              composed = 0x0165;
+              break;  // t -> ť
+            case 'Z':
+              composed = 0x017D;
+              break;  // Z -> Ž
+            case 'z':
+              composed = 0x017E;
+              break;  // z -> ž
             default:
               break;
           }

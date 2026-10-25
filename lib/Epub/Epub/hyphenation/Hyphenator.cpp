@@ -22,9 +22,9 @@ struct Iso639Mapping {
   const char* iso639_2;
   const char* iso639_1;
 };
-static constexpr Iso639Mapping kIso639Mappings[] = {{"eng", "en"}, {"fra", "fr"}, {"fre", "fr"}, {"deu", "de"},
-                                                    {"ger", "de"}, {"rus", "ru"}, {"spa", "es"}, {"ita", "it"},
-                                                    {"ukr", "uk"}, {"swe", "sv"}, {"por", "pt"}};
+static constexpr Iso639Mapping kIso639Mappings[] = {
+    {"eng", "en"}, {"fra", "fr"}, {"fre", "fr"}, {"deu", "de"}, {"ger", "de"}, {"rus", "ru"}, {"spa", "es"},
+    {"ita", "it"}, {"ukr", "uk"}, {"swe", "sv"}, {"por", "pt"}, {"ces", "cs"}, {"cze", "cs"}};
 
 // Maps a BCP-47 or ISO 639-2 language tag to a language-specific hyphenator.
 const LanguageHyphenator* hyphenatorForLanguage(const std::string& langTag) {
@@ -47,6 +47,9 @@ const LanguageHyphenator* hyphenatorForLanguage(const std::string& langTag) {
       break;
     }
   }
+
+  // Some Czech publishers use the country code instead of the language code.
+  if (primary == "cz") primary = "cs";
 
   return getLanguageHyphenatorForPrimaryTag(primary);
 }
