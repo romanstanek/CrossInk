@@ -22,6 +22,9 @@ X4 Pro firmware. Manual runs include the firmware builds too. The aggregate
 `Test Status` check must pass before merging; no separate reviewer is required
 for this single-maintainer fork.
 
+If a PR has no checks, manually dispatch CI on its head branch. An empty check
+list is not a passing result.
+
 Inherited website deployment, issue triage, font publishing, and upstream release
 workflows are disabled in this fork. They depend on upstream services or secrets.
 Firmware releases are published explicitly after testing.
