@@ -3,6 +3,7 @@
 ### Added
 
 - Czech EPUB hyphenation, including regional and ISO 639-2 language tags, legacy `cz` metadata, and decomposed Czech accents.
+- Run native hyphenation, Unicode, and page-cache regression tests in CI.
 
 ## [v1.6.1] - 2026-10-03
 
