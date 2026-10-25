@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
 
 # A newer commit supersedes older PR validation; keep main pushes independent.
 concurrency:
@@ -14,6 +15,28 @@ permissions:
   contents: read
 
 jobs:
+  native-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          submodules: recursive
+
+      - name: Configure native tests
+        run: cmake -S test -B build/native -DCMAKE_BUILD_TYPE=Release
+
+      - name: Build reader regression tests
+        run: >-
+          cmake --build build/native --parallel 2 --target
+          HyphenationEvaluationTest Utf8ComposeTest
+          CombiningMarkAnchorTest SectionPersistenceTest
+
+      - name: Test hyphenation, Unicode, and cache persistence
+        run: >-
+          ctest --test-dir build/native --output-on-failure
+          -R '(HyphenationEval\.|CzechHyphenation\.|Utf8|AnchorFor\.|AnchorOver\.|AnchorOverRotated90CW\.|RaiseAboveBase\.|SectionPersistenceTest\.|EpubProgressPersistenceTest\.)'
+
   clang-format:
     runs-on: ubuntu-latest
     steps:
@@ -74,7 +97,7 @@ jobs:
   build:
     # Firmware artifacts are validated on pull requests; release builds stay
     # in the dedicated release workflow.
-    if: github.event_name == 'pull_request'
+    if: github.event_name != 'push'
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -126,6 +149,7 @@ jobs:
   test-status:
     name: Test Status
     needs:
+      - native-tests
       - build
       - clang-format
       - cppcheck
